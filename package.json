@@ -14,9 +14,14 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "@mapbox/togeojson": "^0.16.0",
+    "d3-ease": "^2.0.0",
     "gatsby": "^2.26.1",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-map-gl": "^6.1.5",
+    "react-scrollama": "^2.2.15",
+    "zustand": "^3.3.1"
   },
   "devDependencies": {
     "prettier": "2.2.1"
