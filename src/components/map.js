@@ -2,6 +2,10 @@ import React from "react"
 import ReactMapGL, { FlyToInterpolator } from "react-map-gl"
 import { easeCubic } from "d3-ease"
 import { Scrollama, Step } from "react-scrollama"
+import mapboxgl from "mapbox-gl" // This is a dependency of react-map-gl even if you didn't explicitly install it
+
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
 
 import useStore from "./viewport"
 import { results } from "./cerrosMaule.json"
