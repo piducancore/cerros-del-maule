@@ -2,16 +2,7 @@ import React from "react"
 
 import Map from "../components/map"
 import Story from "../components/story"
-import { results } from "../components/cerrosMaule.json"
-
-const chapters = results.map(cerro => ({
-  ...cerro,
-  latitude: parseFloat(cerro.latitude),
-  longitude: parseFloat(cerro.longitude),
-  zoom: 12,
-  pitch: 60,
-  bearing: 0,
-}))
+import chapters from "../components/full.json"
 
 export default function Home() {
   return (

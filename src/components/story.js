@@ -27,7 +27,8 @@ export default function Story({ chapters }) {
               maxWidth: "480px",
             }}
           >
-            <pre
+            {/* <pre>{JSON.stringify(chapter, null, 2)}</pre> */}
+            <div
               style={{
                 padding: 8,
                 margin: 8,
@@ -35,8 +36,10 @@ export default function Story({ chapters }) {
                 color: "#fff",
               }}
             >
-              {JSON.stringify(chapter, null, 2)}
-            </pre>
+              <h1>{chapter.name}</h1>
+              <img src={chapter.images[0]} style={{ width: "100%" }} />
+              <div dangerouslySetInnerHTML={{ __html: chapter.text }} />
+            </div>
           </div>
         </Step>
       ))}
