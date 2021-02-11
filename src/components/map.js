@@ -33,17 +33,6 @@ export default function Map(props) {
         "sky-atmosphere-sun-intensity": 15,
       },
     })
-
-    // map.addLayer(
-    //   {
-    //     id: "hillshading",
-    //     source: "mapbox-dem",
-    //     type: "hillshade",
-    //     // insert below waterway-river-canal-shadow;
-    //     // where hillshading sits in the Mapbox Outdoors style
-    //   }
-    //   // "waterway-river-canal-shadow"
-    // )
   }
 
   return (
@@ -55,10 +44,8 @@ export default function Map(props) {
       width="100%"
       onLoad={handleLoaded}
       onViewportChange={setViewport}
-      // mapStyle="mapbox://styles/mapbox/cjaudgl840gn32rnrepcb9b9g"
       mapStyle="mapbox://styles/mapbox/satellite-v9"
       mapboxApiAccessToken={process.env.GATSBY_MAPBOX_ACCESS_TOKEN}
-      onTransitionEnd={end => console.log(end)}
     />
   )
 }
