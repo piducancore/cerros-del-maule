@@ -1,88 +1,64 @@
-import React from "react"
-import ReactMapGL, { FlyToInterpolator } from "react-map-gl"
-import { easeCubic } from "d3-ease"
-import { Scrollama, Step } from "react-scrollama"
+import React, { useRef } from "react"
+import ReactMapGL from "react-map-gl"
 import mapboxgl from "mapbox-gl" // This is a dependency of react-map-gl even if you didn't explicitly install it
 
 import useStore from "./viewport"
-import { results } from "./cerrosMaule.json"
 
 import "mapbox-gl/dist/mapbox-gl.css"
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
 
-const chapters = results.map(cerro => ({
-  ...cerro,
-  latitude: parseFloat(cerro.latitude),
-  longitude: parseFloat(cerro.longitude),
-  zoom: 12,
-  pitch: 60,
-  bearing: 0,
-}))
-
-export default function Map() {
+export default function Map(props) {
   const { viewport, setViewport } = useStore()
-  const flyTo = newViewport => {
-    setViewport({
-      ...viewport,
-      ...newViewport,
-      transitionDuration: 5000,
-      transitionInterpolator: new FlyToInterpolator(),
-      transitionEasing: easeCubic,
+  const ref = useRef()
+  const handleLoaded = () => {
+    const map = ref.current.getMap()
+
+    map.addSource("mapbox-dem", {
+      type: "raster-dem",
+      url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+      tileSize: 512,
+      maxzoom: 14,
     })
+    // add the DEM source as a terrain layer with exaggerated height
+    map.setTerrain({ source: "mapbox-dem", exaggeration: 1.6 })
+    // add a sky layer that will show when the map is highly pitched
+    map.addLayer({
+      id: "sky",
+      type: "sky",
+      paint: {
+        "sky-type": "atmosphere",
+        "sky-atmosphere-sun": [0.0, 0.0],
+        "sky-atmosphere-sun-intensity": 15,
+      },
+    })
+
+    // map.addLayer(
+    //   {
+    //     id: "hillshading",
+    //     source: "mapbox-dem",
+    //     type: "hillshade",
+    //     // insert below waterway-river-canal-shadow;
+    //     // where hillshading sits in the Mapbox Outdoors style
+    //   }
+    //   // "waterway-river-canal-shadow"
+    // )
   }
+
   return (
-    <div>
-      <ReactMapGL
-        {...viewport}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: -500,
-        }}
-        onViewportChange={setViewport}
-        mapboxApiAccessToken={process.env.GATSBY_MAPBOX_ACCESS_TOKEN}
-      />
-      <button
-        style={{ position: "fixed" }}
-        onClick={() =>
-          flyTo({
-            longitude: -74.1,
-            latitude: 40.7,
-            zoom: 14,
-          })
-        }
-      >
-        New York City
-      </button>
-      <Scrollama offset={0.5} onStepEnter={({ data }) => flyTo(data)}>
-        {chapters.map((chapter, index) => (
-          <Step key={index} data={chapter}>
-            <div
-              style={{
-                position: "relative",
-                marginBottom: "180vh",
-                maxWidth: "480px",
-              }}
-            >
-              <pre
-                style={{
-                  padding: 8,
-                  margin: 8,
-                  background: "rgba(0,0,0,0.8)",
-                  color: "#fff",
-                }}
-              >
-                {JSON.stringify(chapter, null, 2)}
-              </pre>
-            </div>
-          </Step>
-        ))}
-      </Scrollama>
-    </div>
+    <ReactMapGL
+      {...viewport}
+      {...props}
+      ref={ref}
+      height="100%"
+      width="100%"
+      onLoad={handleLoaded}
+      onViewportChange={setViewport}
+      // mapStyle="mapbox://styles/mapbox/cjaudgl840gn32rnrepcb9b9g"
+      mapStyle="mapbox://styles/mapbox/satellite-v9"
+      mapboxApiAccessToken={process.env.GATSBY_MAPBOX_ACCESS_TOKEN}
+      onTransitionEnd={end => console.log(end)}
+    />
   )
 }
