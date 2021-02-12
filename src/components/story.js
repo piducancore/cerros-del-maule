@@ -10,6 +10,9 @@ export default function Story({ chapters }) {
   const handleStepEnter = ({ data }) => {
     setViewport({
       ...data,
+      zoom: 8,
+      pitch: 0,
+      bearing: 0,
       transitionDuration: 5000,
       transitionInterpolator: new FlyToInterpolator(),
       transitionEasing: easeCubic,
@@ -37,7 +40,11 @@ export default function Story({ chapters }) {
               }}
             >
               <h1>{chapter.name}</h1>
-              <img src={chapter.images[0]} style={{ width: "100%" }} />
+              <img
+                src={chapter.images[0]}
+                alt={chapter.name}
+                style={{ width: "100%" }}
+              />
               <div dangerouslySetInnerHTML={{ __html: chapter.text }} />
             </div>
           </div>

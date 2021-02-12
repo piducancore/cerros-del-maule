@@ -2,10 +2,11 @@ import create from "zustand"
 
 const useStore = create(set => ({
   viewport: {
-    latitude: 37.78,
-    longitude: -122.45,
-    zoom: 14,
-    pitch: 60,
+    latitude: 0,
+    longitude: 0,
+    zoom: 0,
+    pitch: 0,
+    bearing: 0,
   },
   setViewport: newViewport => {
     set(state => ({
