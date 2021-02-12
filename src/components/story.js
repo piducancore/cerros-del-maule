@@ -45,7 +45,7 @@ export default function Story({ chapters }) {
                 alt={chapter.name}
                 style={{ width: "100%" }}
               />
-              <div dangerouslySetInnerHTML={{ __html: chapter.text }} />
+              <div dangerouslySetInnerHTML={{ __html: chapter.html }} />
             </div>
           </div>
         </Step>
