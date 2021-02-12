@@ -8,5 +8,6 @@ module.exports = {
         path: `${__dirname}/src/stories/`,
       },
     },
+    `gatsby-plugin-theme-ui`,
   ],
 }
