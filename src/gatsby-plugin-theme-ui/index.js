@@ -1,15 +1,15 @@
 import { tosh as light, deep as dark } from "@theme-ui/presets"
 import { merge } from "theme-ui"
 
-import "@fontsource/raleway/700.css"
-import "@fontsource/bitter/700.css"
+import "@fontsource/space-mono/700.css"
+import "@fontsource/space-mono/400.css"
 
 const theme = merge(light, {
   colors: {
     text: "#1E212B",
     primary: "#D90368",
     secondary: "#FFD400",
-    background: "#FFFFFF",
+    background: "#FFFFFFDD",
     modes: {
       dark: {
         ...dark.colors,
@@ -20,12 +20,12 @@ const theme = merge(light, {
     container: 460,
   },
   fonts: {
-    body: "'Raleway', sans-serif",
-    heading: "'Bitter', sans-serif",
+    body: "'Space Mono', monospace",
+    heading: "'Space Mono', monospace",
   },
   fontSizes: [12, 14, 18, 20, 24, 32, 48, 64, 72],
   fontWeights: {
-    body: 700,
+    body: 400,
     heading: 700,
     bold: 700,
   },
