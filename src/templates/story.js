@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from "theme-ui"
 import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -5,8 +7,8 @@ import { Link } from "gatsby"
 import { Scrollama, Step } from "react-scrollama"
 import { FlyToInterpolator } from "react-map-gl"
 import { easeCubic } from "d3-ease"
-import Map from "../components/map"
 import useStore from "../components/viewport"
+import Layout from "../components/layout"
 
 const shortcodes = { Link } // Provide common components here
 
@@ -22,7 +24,7 @@ export default function StoryTemplate({ pageContext }) {
     })
   }
   return (
-    <React.Fragment>
+    <Layout>
       <MDXProvider components={shortcodes}>
         <Scrollama offset={0.5} onStepEnter={handleStepEnter}>
           {chapters.map(({ body, slug, frontmatter }, index) => (
@@ -33,11 +35,12 @@ export default function StoryTemplate({ pageContext }) {
               }}
             >
               <div
-                style={{
-                  position: "relative",
-                  paddingTop: index > 0 ? null : "180vh",
-                  marginBottom: "180vh",
-                  maxWidth: "480px",
+                sx={{
+                  maxWidth: "container",
+                  ml: "auto",
+                  mb: index < chapters.length - 1 ? "100vh" : 4,
+                  p: 3,
+                  bg: "background",
                 }}
               >
                 <MDXRenderer key={slug}>{body}</MDXRenderer>
@@ -46,14 +49,6 @@ export default function StoryTemplate({ pageContext }) {
           ))}
         </Scrollama>
       </MDXProvider>
-      <Map
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: -500,
-        }}
-      />
-    </React.Fragment>
+    </Layout>
   )
 }
