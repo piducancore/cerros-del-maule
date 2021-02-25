@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from "theme-ui"
-import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "gatsby"
@@ -27,26 +26,29 @@ export default function StoryTemplate({ pageContext }) {
     <Layout>
       <MDXProvider components={shortcodes}>
         <Scrollama offset={0.5} onStepEnter={handleStepEnter}>
-          {chapters.map(({ body, slug, frontmatter }, index) => (
-            <Step
-              key={index}
-              data={{
-                ...frontmatter,
-              }}
-            >
-              <div
-                sx={{
-                  maxWidth: "container",
-                  ml: "auto",
-                  mb: index < chapters.length - 1 ? "100vh" : 4,
-                  p: 3,
-                  bg: "background",
+          {chapters.map((chapter, index) => {
+            const { body, slug, frontmatter } = chapter
+            return (
+              <Step
+                key={index}
+                data={{
+                  ...frontmatter,
                 }}
               >
-                <MDXRenderer key={slug}>{body}</MDXRenderer>
-              </div>
-            </Step>
-          ))}
+                <div
+                  sx={{
+                    maxWidth: "container",
+                    ml: "auto",
+                    mb: index < chapters.length - 1 ? "100vh" : 4,
+                    p: 3,
+                    bg: "background",
+                  }}
+                >
+                  <MDXRenderer key={slug}>{body}</MDXRenderer>
+                </div>
+              </Step>
+            )
+          })}
         </Scrollama>
       </MDXProvider>
     </Layout>
