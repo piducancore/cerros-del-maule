@@ -4,7 +4,7 @@ import { FlyToInterpolator } from "react-map-gl"
 import { easeCubic } from "d3-ease"
 
 import Layout from "../components/layout"
-import useStore from "../components/viewport"
+import { useMapStore } from "../components/map"
 
 const chapters = [
   {
@@ -74,7 +74,7 @@ const chapters = [
   },
 ]
 export default function Home() {
-  const { setViewport } = useStore()
+  const { setViewport } = useMapStore()
   const handleStepEnter = ({ data }) => {
     setViewport({
       ...data,

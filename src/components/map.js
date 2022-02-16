@@ -1,11 +1,27 @@
+import create from "zustand"
 import React, { useRef } from "react"
 import ReactMapGL, { Layer, LinearInterpolator } from "react-map-gl"
-import { easeLinear } from "d3-ease"
-import mapboxgl from "mapbox-gl" // This is a dependency of react-map-gl even if you didn't explicitly install it
-
-import useStore from "./viewport"
-
+import mapboxgl from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
+import { easeLinear } from "d3-ease"
+
+export const useMapStore = create(set => ({
+  viewport: {
+    latitude: 0,
+    longitude: 0,
+    zoom: 0,
+    pitch: 0,
+    bearing: 0,
+  },
+  setViewport: newViewport => {
+    set(state => ({
+      viewport: {
+        ...state.viewport,
+        ...newViewport,
+      },
+    }))
+  },
+}))
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
@@ -22,7 +38,7 @@ const skyLayer = {
 }
 
 export default function Map(props) {
-  const { viewport, setViewport } = useStore()
+  const { viewport, setViewport } = useMapStore()
   const ref = useRef()
   const onLoad = () => {
     const map = ref.current.getMap()
