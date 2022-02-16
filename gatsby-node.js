@@ -1,15 +1,15 @@
-const _ = require("lodash/collection")
+const { groupBy } = require("lodash/collection");
 
-function removeEmpty(obj) {
-  return Object.fromEntries(
-    Object.entries(obj)
-      .filter(([_, v]) => v != null)
-      .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
-  )
-}
+// function removeEmpty(obj) {
+//   return Object.fromEntries(
+//     Object.entries(obj)
+//       .filter(([_, v]) => v != null)
+//       .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
+//   )
+// }
 
 exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
   const { data } = await graphql(`
     query {
       allMdx {
@@ -27,24 +27,22 @@ exports.createPages = async ({ graphql, actions }) => {
         }
       }
     }
-  `)
+  `);
 
-  const stories = _.groupBy(
-    data.allMdx.nodes.map(story => {
-      const parentFolder = story.slug.split("/")
-      return {
-        ...story,
-        parentFolder: parentFolder.length > 1 ? parentFolder[0] : "/",
-      }
-    }),
-    "parentFolder"
-  )
+  const { nodes } = data.allMdx;
 
-  Object.keys(stories).map(story =>
+  const nodesWithPath = nodes.map((story) => {
+    const path = story.slug.split("/").length > 1 ? story.slug.split("/")[0] : "/";
+    return { ...story, path };
+  });
+
+  const stories = groupBy(nodesWithPath, "path");
+
+  Object.keys(stories).map((path) =>
     createPage({
-      path: story,
+      path,
       component: require.resolve("./src/templates/story.js"),
-      context: stories[story].map(chapter => removeEmpty(chapter)),
+      context: stories[path] /* .map(chapter => removeEmpty(chapter)) */,
     })
-  )
-}
+  );
+};
