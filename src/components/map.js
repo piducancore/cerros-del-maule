@@ -1,11 +1,11 @@
-import create from "zustand"
-import React, { useRef } from "react"
-import ReactMapGL, { Layer, LinearInterpolator } from "react-map-gl"
-import mapboxgl from "mapbox-gl"
-import "mapbox-gl/dist/mapbox-gl.css"
-import { easeLinear } from "d3-ease"
+import create from "zustand";
+import React, { useRef } from "react";
+import ReactMapGL, { Layer /* , LinearInterpolator */ } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+// import { easeLinear } from "d3-ease";
 
-export const useMapStore = create(set => ({
+export const useMapStore = create((set) => ({
   viewport: {
     latitude: 0,
     longitude: 0,
@@ -13,18 +13,18 @@ export const useMapStore = create(set => ({
     pitch: 0,
     bearing: 0,
   },
-  setViewport: newViewport => {
-    set(state => ({
+  setViewport: (newViewport) => {
+    set((state) => ({
       viewport: {
         ...state.viewport,
         ...newViewport,
       },
-    }))
+    }));
   },
-}))
+}));
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 const skyLayer = {
   id: "sky",
@@ -35,28 +35,28 @@ const skyLayer = {
     "sky-atmosphere-sun": [0.0, 0.0],
     "sky-atmosphere-sun-intensity": 3,
   },
-}
+};
 
 export default function Map(props) {
-  const { viewport, setViewport } = useMapStore()
-  const ref = useRef()
+  const { viewport, setViewport } = useMapStore();
+  const ref = useRef();
   const onLoad = () => {
-    const map = ref.current.getMap()
+    const map = ref.current.getMap();
     map.addSource("mapbox-dem", {
       type: "raster-dem",
       url: "mapbox://mapbox.mapbox-terrain-dem-v1",
       tileSize: 512,
       maxzoom: 14,
-    })
-    map.setTerrain({ source: "mapbox-dem", exaggeration: 1.6 })
-  }
-  const onTransitionEnd = () =>
-    setViewport({
-      bearing: 720,
-      transitionDuration: 90000,
-      transitionInterpolator: new LinearInterpolator(),
-      transitionEasing: easeLinear,
-    })
+    });
+    map.setTerrain({ source: "mapbox-dem", exaggeration: 1.6 });
+  };
+  // const onTransitionEnd = () =>
+  //   setViewport({
+  //     bearing: 720,
+  //     transitionDuration: 90000,
+  //     transitionInterpolator: new LinearInterpolator(),
+  //     transitionEasing: easeLinear,
+  //   })
   return (
     <ReactMapGL
       {...viewport}
@@ -72,11 +72,11 @@ export default function Map(props) {
       }}
       onViewportChange={setViewport}
       onLoad={onLoad}
-      onTransitionEnd={onTransitionEnd}
+      // onTransitionEnd={onTransitionEnd}
       mapStyle="mapbox://styles/mapbox/satellite-v9"
       mapboxApiAccessToken={process.env.GATSBY_MAPBOX_ACCESS_TOKEN}
     >
       <Layer {...skyLayer} />
     </ReactMapGL>
-  )
+  );
 }

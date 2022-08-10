@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { jsx, Styled } from "theme-ui"
-import { useStaticQuery, graphql } from "gatsby"
+import { jsx, Styled } from "theme-ui";
+import { useStaticQuery, graphql } from "gatsby";
 
-import Map from "./map"
+import Map from "./map";
 
-export default props => {
+export default (props) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -13,9 +13,9 @@ export default props => {
         }
       }
     }
-  `)
+  `);
 
-  const { title } = data.site.siteMetadata
+  const { title } = data.site.siteMetadata;
 
   return (
     <div
@@ -34,7 +34,7 @@ export default props => {
           width: "100%",
         }}
       >
-        <Styled.h4>{title}</Styled.h4>
+        <Styled.h4 sx={{ color: "background" }}>{title}</Styled.h4>
       </header>
       <main
         sx={{
@@ -45,5 +45,5 @@ export default props => {
         {props.children}
       </main>
     </div>
-  )
-}
+  );
+};
